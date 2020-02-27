@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
 
 
     <TextView
         android:id="@+id/txt_hello"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="200dp"
+        android:fontFamily="sans-serif-medium"
         android:text="Register!"
         android:textColor="@color/colorPrimary"
-        android:textSize="50dp"
-        android:fontFamily="sans-serif-medium"
-        android:layout_marginTop="200dp"
-        android:layout_marginLeft="40dp"
-        />
+        android:textSize="50dp" />
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_marginRight="62dp"
         android:layout_marginTop="36.7dp"
+        android:layout_marginRight="62dp"
         android:background="@drawable/blue_border_rounded_cornwe">
 
         <!-- INPUT -->
@@ -42,12 +42,13 @@
             android:textSize="14sp" />
 
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_marginRight="62dp"
         android:layout_marginTop="12.7dp"
+        android:layout_marginRight="62dp"
         android:background="@drawable/blue_border_rounded_cornwe">
 
         <!-- INPUT -->
@@ -72,24 +73,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_marginRight="62dp"
         android:layout_marginTop="12.7dp"
+        android:layout_marginRight="62dp"
         android:background="@drawable/blue_border_rounded_cornwe">
 
-    <EditText
-        android:id="@+id/et_bio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:hint="Bio"
-        android:inputType="textEmailAddress"
-        android:maxLines="3"
-        android:paddingLeft="17dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:textColor="@color/colorPrimary"
-        android:textCursorDrawable="@drawable/cursor_color"
-        android:textSize="14sp" />
+        <EditText
+            android:id="@+id/et_bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="Bio"
+            android:inputType="textEmailAddress"
+            android:maxLines="3"
+            android:paddingLeft="17dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/colorPrimary"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="14sp" />
     </RelativeLayout>
 
 
@@ -97,8 +98,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_marginRight="62dp"
         android:layout_marginTop="12.7dp"
+        android:layout_marginRight="62dp"
         android:background="@drawable/blue_border_rounded_cornwe">
 
         <!-- INPUT -->
@@ -134,19 +135,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_rounded"
-            android:text="Register"
             android:onClick="register"
+            android:text="Register"
             android:textColor="#ffff" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_toEndOf="@+id/btn_register"
             android:layout_marginTop="20dp"
-            android:visibility="invisible"
-            android:layout_height="wrap_content" />
+            android:layout_toEndOf="@+id/btn_register"
+            android:visibility="invisible" />
     </RelativeLayout>
 
 
@@ -154,26 +155,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alredy have account?"
             android:layout_marginLeft="40dp"
-            android:textColor="#446391"
-            android:textSize="20dp"
             android:layout_marginTop="120sp"
-            />
+            android:text="Alredy have account?"
+            android:textColor="#446391"
+            android:textSize="20dp" />
+
         <TextView
             android:id="@+id/txt_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Login"
-            android:textColor="#ff4c60"
-            android:textSize="20dp"
             android:layout_marginTop="120sp"
             android:onClick="moveToLogin"
-            />
+            android:text=" Login"
+            android:textColor="#ff4c60"
+            android:textSize="20dp" />
 
     </LinearLayout>
 
