@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="#e0e0e0"
     android:fitsSystemWindows="true"
-    tools:context=".ChangeAccountDataActivity">
+    tools:context=".ChangeAccountDataActivity"
+    tools:ignore="HardcodedText">
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,6 +61,7 @@
                 android:ems="10"
                 android:hint="Name"
                 android:inputType="textPersonName"
+                android:importantForAutofill="no"
                 android:padding="5dp" />
 
             <EditText
@@ -73,6 +75,7 @@
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="textPersonName"
+                android:importantForAutofill="no"
                 android:padding="5dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -97,7 +100,8 @@
             android:layout_margin="5dp"
             android:background="@null"
             android:gravity="center"
-            android:hint="@string/text_hint_bio"
+            android:hint="Bio"
+            android:importantForAutofill="no"
             android:inputType="textMultiLine" />
     </androidx.cardview.widget.CardView>
 
@@ -108,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:onClick="changePassword"
-        android:text="@string/btn_change_pass"
+        android:text="Change Password"
         android:textAllCaps="false"
         android:textColor="#5d6d6f"
         android:textSize="12sp"
