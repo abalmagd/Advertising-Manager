@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="moveToRegistration"
                 android:text=" Register"
-                android:textColor="#ff4c60"
+                android:textColor="@color/colorAccent"
                 android:textSize="20sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

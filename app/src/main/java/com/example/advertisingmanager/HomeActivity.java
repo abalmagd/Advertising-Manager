@@ -39,8 +39,6 @@ public class HomeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
 
-        //Objects.requireNonNull(getSupportActionBar()).hide();
-
         img_avatar = findViewById(R.id.img_avatar);
         tv_name = findViewById(R.id.tv_name);
         tv_email = findViewById(R.id.tv_email);

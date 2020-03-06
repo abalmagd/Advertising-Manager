@@ -173,7 +173,7 @@
             android:layout_marginTop="60dp"
             android:onClick="moveToLogin"
             android:text=" Login"
-            android:textColor="#ff4c60"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp" />
 
     </LinearLayout>
