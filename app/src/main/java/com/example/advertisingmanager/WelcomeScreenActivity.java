@@ -11,6 +11,9 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
+
+        if (SessionManager.getInstance(this).isLoggedIn())
+            startActivity(new Intent(this, HomeActivity.class));
     }
 
     public void moveToRegistration(View view) {

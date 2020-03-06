@@ -4,133 +4,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e0e0e0"
-    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".ChangeAccountDataActivity"
-    tools:ignore="HardcodedText">
+    tools:ignore="HardcodedText, AutoFill, LabelFor">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/img_avatar"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        app:civ_border_color="@color/colorAccent"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Edit Profile info"
-        android:textColor="#000"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_profile"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/anonymous_avatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_info"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="30dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_profile">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/oPass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:background="@null"
-                android:drawableStart="@drawable/ic_verified_user_black_24dp"
-                android:drawablePadding="5dp"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                android:importantForAutofill="no"
-                android:padding="5dp" />
-
-            <EditText
-                android:id="@+id/nPass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:background="@null"
-                android:drawableStart="@drawable/ic_email_black_24dp"
-                android:drawablePadding="5dp"
-                android:ems="10"
-                android:hint="Email"
-                android:inputType="textPersonName"
-                android:importantForAutofill="no"
-                android:padding="5dp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="30dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cv_info">
-
-        <EditText
-            android:id="@+id/nBio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:background="@null"
-            android:gravity="center"
-            android:hint="Bio"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine" />
-    </androidx.cardview.widget.CardView>
-
-    <Button
-        android:id="@+id/btn_change_pass"
-        style="?android:attr/borderlessButtonStyle"
+        android:id="@+id/tv_upload_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:onClick="changePassword"
-        android:text="Change Password"
-        android:textAllCaps="false"
-        android:textColor="#5d6d6f"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@id/updateData"
+        android:onClick="selectImage"
+        android:text="Upload Image"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_avatar" />
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="80dp"
+        android:drawableStart="@drawable/ic_person"
+        android:gravity="center"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_upload_image" />
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="80dp"
+        android:drawableStart="@drawable/ic_email"
+        android:gravity="center"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_name" />
+
+    <EditText
+        android:id="@+id/et_bio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="80dp"
+        android:drawableStart="@drawable/ic_bio"
+        android:gravity="center"
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
     <Button
-        android:id="@+id/updateData"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/btn_style"
-        android:src="@drawable/ic_save_black_24dp"
-        android:text="Save"
-        android:textColor="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/btn_change_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/btn_rounded"
+        android:drawableStart="@drawable/ic_lock"
+        android:onClick="changePassword"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="Change Password"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sw_dark" />
+
+    <Switch
+        android:id="@+id/sw_dark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:switchPadding="40dp"
+        android:text="Dark Mode"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_bio" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

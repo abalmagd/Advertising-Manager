@@ -1,7 +1,6 @@
 package com.example.advertisingmanager;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -10,12 +9,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.view.View;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -34,154 +34,107 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChangeAccountDataActivity extends AppCompatActivity {
-    private ImageView nAvatar;
-    private Button updateData;
-    private EditText nUsername;
-    private EditText nEmail;
-    private EditText nBio;
-    private Bundle extras;
+
+    Bundle extras;
+    private ImageView img_avatar;
+    private EditText et_name;
+    private EditText et_email;
+    private EditText et_bio;
+    private Switch sw_darkMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_account_data);
-        nAvatar = findViewById(R.id.img_profile);
-        nUsername = findViewById(R.id.oPass);
-        nEmail = findViewById(R.id.nPass);
-        nBio = findViewById(R.id.nBio);
-        updateData = findViewById(R.id.updateData);
-
-        //Hiding hint text views
-        //unHint.setVisibility(View.INVISIBLE);
-        //emailHint.setVisibility(View.INVISIBLE);
+        img_avatar = findViewById(R.id.img_avatar);
+        et_name = findViewById(R.id.et_name);
+        et_email = findViewById(R.id.et_email);
+        et_bio = findViewById(R.id.et_bio);
+        sw_darkMode = findViewById(R.id.sw_dark);
 
         // Adding underline to the text buttons
-        //Button uploadImg = findViewById(R.id.btn_upload_img);
-        //uploadImg.setPaintFlags(uploadImg.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        Button changePass = findViewById(R.id.btn_change_pass);
-        changePass.setPaintFlags(changePass.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        TextView tv_upload_image = findViewById(R.id.tv_upload_image);
+        tv_upload_image.setPaintFlags(tv_upload_image.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         extras = getIntent().getExtras();
         if (extras != null) {
-            nUsername.setText(extras.getString("username"));
-            nEmail.setText(extras.getString("email"));
-            nBio.setText(extras.getString("bio"));
-            Picasso.get().load("https://o6ugproject.s3.amazonaws.com/" + extras.getString("avatar")).noFade().into(nAvatar);
+            et_name.setText(extras.getString("username"));
+            et_email.setText(extras.getString("email"));
+            et_bio.setText(extras.getString("bio"));
+            Picasso.get().load("https://o6ugproject.s3.amazonaws.com/"
+                    + extras.getString("avatar")).into(img_avatar);
         }
 
+        // Validate the input fields and
         dataValidation();
+
+        sw_darkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                /*setTheme(R.style.DarkMode);
+                finish();*/
+            }
+        });
+    }
+
+    public void confirm(View view) {
+        /*Drawable[] et_nameCompoundDrawables = et_name.getCompoundDrawables();
+        Drawable et_nameRightCompoundDrawable = et_nameCompoundDrawables[3];
+
+        Drawable[] et_emailCompoundDrawables = et_name.getCompoundDrawables();
+        Drawable et_emailRightCompoundDrawable = et_nameCompoundDrawables[3];
+
+        if(et_nameRightCompoundDrawable == ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.ic_check_green)
+                &&
+                et_nameRightCompoundDrawable == ContextCompat.getDrawable(getApplicationContext(),
+                        R.drawable.ic_check_green)) {
+        }*/
+    }
+
+    public void back(View view) {
+        finish();
     }
 
     public void changePassword(View view) {
         Intent intent = new Intent(this, ChangePasswordActivity.class);
-        intent.putExtra("n_username", nUsername.getText());
-        intent.putExtra("n_email", nEmail.getText());
-        intent.putExtra("n_bio", nBio.getText());
+        intent.putExtra("password", extras.getString("password"));
         startActivity(intent);
     }
 
-    public void back(Boolean i) {
-        if (i) {
-            nUsername.setFocusable(false);
-            nEmail.setFocusable(false);
-            nBio.setFocusable(false);
-
-            makeChangeDataRequest("https://crew-project.herokuapp.com/advertisers/me");
-        }
-        else {
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            //Yes button clicked
-
-                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                            finish();
-
-                            break;
-
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            //No button clicked
-                            break;
-                    }
-                }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Data won't be changed\nAre you sure?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
-        }
-    }
-
     private void dataValidation() {
-        final boolean[] valid = new boolean[1];
 
-        String unRegex = "^[a-zA-Z0-9_-]{3,16}$";
+        // Alphanumeric string that may include _ and – having a length of 3 to 16 characters.
+        String nameRegex = "^[a-zA-Z0-9_-]{3,16}$";
         String emailRegex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 
-        nUsername.addTextChangedListener(new TextChangedListener<EditText>(nUsername) {
+        et_name.addTextChangedListener(new TextChangedListener<EditText>(et_name) {
             @Override
             public void onTextChanged(EditText target, Editable s) {
-                if (nUsername.getText().toString().matches(unRegex)) {
-                    //unHint.setTextColor(getResources().getColor(R.color.colorGreen_A400));
-                    //unHint.setText("Username is valid");
-                    //unHint.setVisibility(View.VISIBLE);
+                if (et_name.getText().toString().matches(nameRegex)) {
 
-                    //if(!emailHint.getText().toString().equals("Please enter a valid Email")) {
-                    //updateData.setColorFilter(getResources().getColor(R.color.colorGreen_A400));
-                    //valid[0] = true;
-                    //}
-
-
+                    et_name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_person, 0,
+                            R.drawable.ic_check_green, 0);
                 }
                 else {
-                    //unHint.setTextColor(getResources().getColor(R.color.colorRed_900));
-                    //unHint.setText("Username should be 3-16 characters long\nand can only include characters");
-                    //unHint.setVisibility(View.VISIBLE);
-                    //valid[0] = false;
-                    //updateData.setColorFilter(getResources().getColor(R.color.colorRed_900));
+                    et_name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_person, 0,
+                            R.drawable.ic_false, 0);
                 }
             }
         });
 
-        nEmail.addTextChangedListener(new TextChangedListener<EditText>(nEmail) {
+        et_email.addTextChangedListener(new TextChangedListener<EditText>(et_email) {
             @Override
             public void onTextChanged(EditText target, Editable s) {
-                if (nEmail.getText().toString().matches(emailRegex)) {
-                    //emailHint.setTextColor(getResources().getColor(R.color.colorGreen_A400));
-                    //emailHint.setText("Email is valid");
-                    //emailHint.setVisibility(View.VISIBLE);
+                if (et_email.getText().toString().matches(emailRegex)) {
 
-
-                    //if(!unHint.getText().toString().equals("Username should be 3-16 characters long\nand can only include characters")) {
-                    //updateData.setColorFilter(getResources().getColor(R.color.colorGreen_A400));
-                    //valid[0] = true;
-                    //}
-
+                    et_email.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_email, 0,
+                            R.drawable.ic_check_green, 0);
                 }
                 else {
-                    //emailHint.setTextColor(getResources().getColor(R.color.colorRed_900));
-                    //emailHint.setText("Please enter a valid Email");
-                    //emailHint.setVisibility(View.VISIBLE);
-                    //updateData.setColorFilter(getResources().getColor(R.color.colorRed_900));
-                    //valid[0] = false;
+                    et_email.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_email, 0,
+                            R.drawable.ic_false, 0);
                 }
-            }
-        });
-
-        nBio.addTextChangedListener(new TextChangedListener<EditText>(nBio) {
-            @Override
-            public void onTextChanged(EditText target, Editable s) {
-                //if(!unHint.getText().toString().equals("Username should be 3-16 characters long\nand can only include characters") && !emailHint.getText().toString().equals("Please enter a valid Email"))
-                //updateData.setColorFilter(getResources().getColor(R.color.colorGreen_A400));
-            }
-        });
-
-        updateData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back(valid[0]);
             }
         });
     }
@@ -190,9 +143,9 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         final SessionManager manager = SessionManager.getInstance(this);
         Map<String, String> postParam = new HashMap<>();
-        postParam.put("name", nUsername.getText().toString());
-        postParam.put("email", nEmail.getText().toString());
-        postParam.put("bio", nBio.getText().toString());
+        postParam.put("name", et_name.getText().toString());
+        postParam.put("email", et_email.getText().toString());
+        postParam.put("bio", et_bio.getText().toString());
         // TODO: Send Avatar
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.PATCH, url, new JSONObject(postParam), response -> {
@@ -226,7 +179,8 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
     }
 
     public void selectImage(View view) {
-        startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), 1);
+        startActivityForResult(new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), 1);
     }
 
     @Override
@@ -239,7 +193,7 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
             Bitmap bitmap;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                nAvatar.setImageBitmap(bitmap);
+                img_avatar.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

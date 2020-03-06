@@ -9,7 +9,7 @@ public class SessionManager {
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
 
-    private SessionManager() {
+    SessionManager() {
     }
 
     public static SessionManager getInstance(Context context) {

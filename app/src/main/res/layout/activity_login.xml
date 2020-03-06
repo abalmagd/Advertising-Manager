@@ -24,7 +24,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginEnd="62dp"
         android:layout_marginTop="36.7dp"
-        android:background="@drawable/blue_border_rounded_corner">
+        android:background="@drawable/border_rounded_corner">
 
         <!-- INPUT -->
         <EditText
@@ -40,7 +40,6 @@
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:textColor="@color/colorPrimary"
-            android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="14sp" />
 
     </RelativeLayout>
@@ -51,7 +50,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginEnd="62dp"
         android:layout_marginTop="12.7dp"
-        android:background="@drawable/blue_border_rounded_corner">
+        android:background="@drawable/border_rounded_corner">
 
         <!-- INPUT -->
         <EditText
@@ -68,7 +67,6 @@
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:textColor="@color/colorPrimary"
-            android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="14sp" />
 
     </RelativeLayout>
