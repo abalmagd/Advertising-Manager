@@ -9,29 +9,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
 
     String avatarURL;
+    private String password;
     private ImageView img_avatar;
     private TextView tv_name;
     private TextView tv_email;
     private TextView tv_bio;
     private TextView tv_balance_count;
-    private String password;
+
+    private RecyclerView myRecyclerView;
+    private Adapter adapter;
+    private ArrayList<DataTemplate> myDataTemplate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +49,18 @@ public class HomeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
 
+        myRecyclerView = findViewById(R.id.recycler_view);
         img_avatar = findViewById(R.id.img_avatar);
         tv_name = findViewById(R.id.tv_name);
         tv_email = findViewById(R.id.tv_email);
         tv_bio = findViewById(R.id.tv_bio);
         tv_balance_count = findViewById(R.id.tv_balance_count);
 
-        fetchProfileData("https://crew-project.herokuapp.com/advertisers/me");
+        myRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        myDataTemplate = new ArrayList<>();
+
+        fetchProfileData("https://crew-project.herokuapp.com/advertisers/me",
+                "https://crew-project.herokuapp.com/campaigns");
 
     }
 
@@ -66,13 +81,57 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void fetchProfileData(String url) {
+    private void fetchProfileData(String profileUrl, String campaignUrl) {
         RequestQueue queue = Volley.newRequestQueue(this);
         final SessionManager manager = SessionManager.getInstance(this);
         Map<String, String> postParam = new HashMap<>();
         postParam.put("token", manager.getToken());
+        // new
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(postParam), response ->
+        JsonObjectRequest campaignDataReq = new JsonObjectRequest(Request.Method.GET, campaignUrl, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                JSONArray jsonArray = response.getJSONArray("rows");
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject campaigns = jsonArray.getJSONObject(i);
+                                    int campaignId = Integer.parseInt(campaigns.getString("id"));
+                                    String campaignName = campaigns.getString("name");
+                                    String campaignLink = campaigns.getString("link");
+                                    float budget = Float.parseFloat(campaigns.getString("budget"));
+                                    float clickPrice = Float.parseFloat(campaigns.getString("click_price"));
+
+                                    myDataTemplate.add(new DataTemplate(campaignId, campaignName,
+                                            campaignLink, budget, clickPrice));
+                                    adapter = new Adapter(HomeActivity.this, myDataTemplate);
+                                    myRecyclerView.setAdapter(adapter);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this,
+                                    "Loading has failed, check your internet connection!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Toast.makeText(HomeActivity.this,
+                                "Loading has failed, check your internet connection!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+        queue.add(campaignDataReq);
+
+        // old
+        JsonObjectRequest profileDataReq
+                = new JsonObjectRequest(Request.Method.GET, profileUrl, new JSONObject(postParam), response ->
         {
             try {
                 if (response.getBoolean("success")) {
@@ -114,6 +173,6 @@ public class HomeActivity extends AppCompatActivity {
         };
 
         // Adding request to request queue
-        queue.add(jsonObjReq);
+        queue.add(profileDataReq);
     }
 }

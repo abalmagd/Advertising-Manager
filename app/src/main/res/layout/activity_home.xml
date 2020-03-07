@@ -45,14 +45,14 @@
         android:textColor="@color/colorPrimary"
         android:textColorHint="@color/colorPrimary" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_bio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="20dp">
+        android:background="@drawable/border_rounded_corner">
 
         <TextView
             android:id="@+id/tv_bio"
@@ -63,7 +63,7 @@
             android:gravity="center"
             android:hint="Bio" />
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,6 +89,19 @@
             android:gravity="end"
             android:hint="20"
             android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="18dp"
+        tools:context=".MainActivity">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 </LinearLayout>
