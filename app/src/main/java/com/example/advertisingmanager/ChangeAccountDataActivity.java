@@ -78,18 +78,7 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
     }
 
     public void confirm(View view) {
-        /*Drawable[] et_nameCompoundDrawables = et_name.getCompoundDrawables();
-        Drawable et_nameRightCompoundDrawable = et_nameCompoundDrawables[3];
-
-        Drawable[] et_emailCompoundDrawables = et_name.getCompoundDrawables();
-        Drawable et_emailRightCompoundDrawable = et_nameCompoundDrawables[3];
-
-        if(et_nameRightCompoundDrawable == ContextCompat.getDrawable(getApplicationContext(),
-                R.drawable.ic_check_green)
-                &&
-                et_nameRightCompoundDrawable == ContextCompat.getDrawable(getApplicationContext(),
-                        R.drawable.ic_check_green)) {
-        }*/
+        makeChangeDataRequest("https://crew-project.herokuapp.com/advertisers/me");
     }
 
     public void back(View view) {

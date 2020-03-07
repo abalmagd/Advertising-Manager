@@ -99,6 +99,7 @@ public class HomeActivity extends AppCompatActivity {
 
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject campaigns = jsonArray.getJSONObject(i);
+
                                     int campaignId = Integer.parseInt(campaigns.getString("id"));
                                     String campaignName = campaigns.getString("name");
                                     String campaignLink = campaigns.getString("link");
