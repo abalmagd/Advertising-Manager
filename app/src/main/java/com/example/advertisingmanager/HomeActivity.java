@@ -88,7 +88,8 @@ public class HomeActivity extends AppCompatActivity {
         postParam.put("token", manager.getToken());
         // new
 
-        JsonObjectRequest campaignDataReq = new JsonObjectRequest(Request.Method.GET, campaignUrl, null,
+        JsonObjectRequest campaignDataReq = new JsonObjectRequest(Request.Method.GET, campaignUrl,
+                new JSONObject(postParam),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
