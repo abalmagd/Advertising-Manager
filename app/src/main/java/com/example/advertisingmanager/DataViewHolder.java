@@ -24,7 +24,7 @@ public class DataViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setTv_campaignId(int campaignId) {
-        tv_campaignId.setText(campaignId);
+        tv_campaignId.setText(campaignId + "");
     }
 
     public void setTv_campaignName(String campaignName) {
@@ -36,7 +36,7 @@ public class DataViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setTv_budget(float budget) {
-        tv_budget.setText(String.valueOf(budget));
+        tv_budget.setText(budget + "$");
     }
 
     public void setTv_clickPrice(float clickPrice) {

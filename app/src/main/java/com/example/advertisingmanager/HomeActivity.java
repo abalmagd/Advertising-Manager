@@ -2,6 +2,7 @@ package com.example.advertisingmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -14,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -58,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
 
         myRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         myDataTemplate = new ArrayList<>();
+        adapter = new Adapter(HomeActivity.this, myDataTemplate);
+        myRecyclerView.setAdapter(adapter);
 
         fetchProfileData("https://crew-project.herokuapp.com/advertisers/me",
                 "https://crew-project.herokuapp.com/campaigns");
@@ -84,56 +85,56 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchProfileData(String profileUrl, String campaignUrl) {
         RequestQueue queue = Volley.newRequestQueue(this);
         final SessionManager manager = SessionManager.getInstance(this);
-        Map<String, String> postParam = new HashMap<>();
-        postParam.put("token", manager.getToken());
         // new
 
         JsonObjectRequest campaignDataReq = new JsonObjectRequest(Request.Method.GET, campaignUrl,
-                new JSONObject(postParam),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                JSONArray jsonArray = response.getJSONArray("rows");
+                new JSONObject(),
+                response -> {
+                    try {
+                        Log.e("RES::", response.toString());
+                        if (response.getBoolean("success")) {
+                            JSONArray jsonArray = response.getJSONArray("rows");
 
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject campaigns = jsonArray.getJSONObject(i);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject campaigns = jsonArray.getJSONObject(i);
 
-                                    int campaignId = Integer.parseInt(campaigns.getString("id"));
-                                    String campaignName = campaigns.getString("name");
-                                    String campaignLink = campaigns.getString("link");
-                                    float budget = Float.parseFloat(campaigns.getString("budget"));
-                                    float clickPrice = Float.parseFloat(campaigns.getString("click_price"));
+                                int campaignId = Integer.parseInt(campaigns.getString("id"));
+                                String campaignName = campaigns.getString("name");
+                                String campaignLink = campaigns.getString("link");
+                                float budget = Float.parseFloat(campaigns.getString("budget"));
+                                float clickPrice = Float.parseFloat(campaigns.getString("click_price"));
 
-                                    myDataTemplate.add(new DataTemplate(campaignId, campaignName,
-                                            campaignLink, budget, clickPrice));
-                                    adapter = new Adapter(HomeActivity.this, myDataTemplate);
-                                    myRecyclerView.setAdapter(adapter);
-                                }
+                                myDataTemplate.add(new DataTemplate(campaignId, campaignName,
+                                        campaignLink, budget, clickPrice));
+                                adapter.notifyDataSetChanged();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(HomeActivity.this,
-                                    "Loading has failed, check your internet connection!",
-                                    Toast.LENGTH_SHORT).show();
+
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                         Toast.makeText(HomeActivity.this,
                                 "Loading has failed, check your internet connection!",
                                 Toast.LENGTH_SHORT).show();
                     }
-                });
+                },
+                error -> {
+                    error.printStackTrace();
+                    Toast.makeText(HomeActivity.this,
+                            "Loading has failed, check your internet connection!",
+                            Toast.LENGTH_SHORT).show();
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> auth = new HashMap<>();
+                auth.put("Authorization", manager.getToken());
+                return auth;
+            }
+        };
         queue.add(campaignDataReq);
 
         // old
         JsonObjectRequest profileDataReq
-                = new JsonObjectRequest(Request.Method.GET, profileUrl, new JSONObject(postParam), response ->
+                = new JsonObjectRequest(Request.Method.GET, profileUrl, new JSONObject(), response ->
         {
             try {
                 if (response.getBoolean("success")) {
