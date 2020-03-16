@@ -140,9 +140,10 @@ public class HomeActivity extends AppCompatActivity {
                 if (response.getBoolean("success")) {
                     Picasso
                             .get()
-                            .load("https://o6ugproject.s3.amazonaws.com/"
+                            .load("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ7ZfIRF-pXMcvpwTEwlMpVGDJ5JYWeGQdK0Ma8y-J6J21M4Xeu"
+                                    /*"https://o6ugproject.s3.amazonaws.com/"
                                     + response.getJSONObject("advertiser")
-                                    .getString("avatar"))
+                                    .getString("avatar")*/)
                             .noFade()
                             .into(img_avatar);
 
