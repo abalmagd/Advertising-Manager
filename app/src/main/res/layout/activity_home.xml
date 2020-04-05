@@ -123,6 +123,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_campaign" />
+
+    <Button
+        android:id="@+id/add_campaign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/ic_add_circle_outline_24dp"
+        android:onClick="addCampaign"
+        android:text="Add Campaign"
+        android:textColor="@color/colorAccent"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_balance" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

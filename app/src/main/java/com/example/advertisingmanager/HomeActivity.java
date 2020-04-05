@@ -35,7 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView tv_name;
     private TextView tv_email;
     private TextView tv_bio;
-    private TextView tv_balance_count;
+    private TextView et_balance_count;
 
     private Adapter adapter;
     private ArrayList<DataTemplate> myDataTemplate;
@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         tv_name = findViewById(R.id.tv_name);
         tv_email = findViewById(R.id.tv_email);
         tv_bio = findViewById(R.id.tv_bio);
-        tv_balance_count = findViewById(R.id.tv_balance_count);
+        et_balance_count = findViewById(R.id.tv_balance_count);
 
         myRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -62,6 +62,12 @@ public class HomeActivity extends AppCompatActivity {
 
         fetchProfileData();
 
+    }
+
+    public void addCampaign(View view) {
+        Intent intent = new Intent(this, AddCampaignActivity.class);
+        intent.putExtra("budget", et_balance_count.getText().toString());
+        startActivity(intent);
     }
 
     public void logout(View view) {
@@ -149,7 +155,7 @@ public class HomeActivity extends AppCompatActivity {
                     tv_bio.setText(response.getJSONObject("advertiser").getString("bio"));
                     //password = response.getJSONObject("advertiser").getString("password");
                     avatarURL = response.getJSONObject("advertiser").getString("avatar");
-                    tv_balance_count.setText(" " + response.getJSONObject("advertiser").getString("balance") + "LE");
+                    et_balance_count.setText(" " + response.getJSONObject("advertiser").getString("balance") + "LE");
 
                 }
                 else {
