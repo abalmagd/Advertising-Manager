@@ -1,5 +1,6 @@
 package com.example.advertisingmanager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -27,11 +28,16 @@ public class SessionManager {
         editor = sharedPreferences.edit();
         editor.remove("token");
         editor.remove("name");
+        editor.remove("password");
         editor.apply();
     }
 
     public String getToken() {
         return sharedPreferences.getString("token", null);
+    }
+
+    public String getPassword() {
+        return sharedPreferences.getString("password", null);
     }
 
     public boolean isLoggedIn() {

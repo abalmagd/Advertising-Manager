@@ -2,6 +2,7 @@ package com.example.advertisingmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+    private String t;
     private EditText et_username;
     private EditText et_password;
     private ProgressBar pb_loading;
@@ -42,15 +44,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
+        t = et_password.getText().toString();
         validation(et_username.getText().toString(), et_password.getText().toString());
     }
 
     private void validation(String username, String password) {
-        String emailRegex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        String emailRegex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
 
         if (username.matches(emailRegex)) {
             if (password.length() != 0) {
-                makeLoginReq("https://crew-project.herokuapp.com/advertisers/login");
+                makeLoginReq();
             }
             else
                 Toast.makeText(getApplicationContext(),
@@ -63,17 +66,19 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
     }
 
-    private void makeLoginReq(String url) {
+
+    private void makeLoginReq() {
         pb_loading.setVisibility(View.VISIBLE);
         RequestQueue queue = Volley.newRequestQueue(this);
         final SessionManager manager = SessionManager.getInstance(this);
 
-        Map<String, String> postParam = new HashMap<String, String>();
+        Map<String, String> postParam = new HashMap<>();
         postParam.put("email", et_username.getText().toString());
         postParam.put("password", et_password.getText().toString());
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                url, new JSONObject(postParam),
+                "https://crew-project.herokuapp.com/advertisers/login",
+                new JSONObject(postParam),
                 response ->
                 {
                     pb_loading.setVisibility(View.INVISIBLE);
@@ -81,7 +86,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.getBoolean("success")) {
                             manager.logIn(response.getString("token"));
                             finish();
-                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(intent);
                         }
                         else {
                             Toast.makeText(getApplicationContext(), response.getString("message"),
@@ -100,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                HashMap<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
                 return headers;
             }

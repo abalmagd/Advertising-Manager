@@ -31,14 +31,12 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity {
 
     String avatarURL;
-    private String password;
     private ImageView img_avatar;
     private TextView tv_name;
     private TextView tv_email;
     private TextView tv_bio;
     private TextView tv_balance_count;
 
-    private RecyclerView myRecyclerView;
     private Adapter adapter;
     private ArrayList<DataTemplate> myDataTemplate;
 
@@ -48,7 +46,8 @@ public class HomeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
 
-        myRecyclerView = findViewById(R.id.recycler_view);
+        RecyclerView myRecyclerView = findViewById(R.id.recycler_view);
+
         img_avatar = findViewById(R.id.img_avatar);
         tv_name = findViewById(R.id.tv_name);
         tv_email = findViewById(R.id.tv_email);
@@ -56,12 +55,12 @@ public class HomeActivity extends AppCompatActivity {
         tv_balance_count = findViewById(R.id.tv_balance_count);
 
         myRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         myDataTemplate = new ArrayList<>();
         adapter = new Adapter(HomeActivity.this, myDataTemplate);
         myRecyclerView.setAdapter(adapter);
 
-        fetchProfileData("https://crew-project.herokuapp.com/advertisers/me",
-                "https://crew-project.herokuapp.com/campaigns");
+        fetchProfileData();
 
     }
 
@@ -78,16 +77,15 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("email", tv_email.getText());
         intent.putExtra("bio", tv_bio.getText());
         intent.putExtra("avatar", avatarURL);
-        intent.putExtra("password", password);
         startActivity(intent);
     }
 
-    private void fetchProfileData(String profileUrl, String campaignUrl) {
+    private void fetchProfileData() {
         RequestQueue queue = Volley.newRequestQueue(this);
         final SessionManager manager = SessionManager.getInstance(this);
-        // new
 
-        JsonObjectRequest campaignDataReq = new JsonObjectRequest(Request.Method.GET, campaignUrl,
+        JsonObjectRequest campaignDataReq = new JsonObjectRequest(Request.Method.GET,
+                "https://crew-project.herokuapp.com/campaigns",
                 new JSONObject(),
                 response -> {
                     try {
@@ -132,25 +130,24 @@ public class HomeActivity extends AppCompatActivity {
         };
         queue.add(campaignDataReq);
 
-        // old
         JsonObjectRequest profileDataReq
-                = new JsonObjectRequest(Request.Method.GET, profileUrl, new JSONObject(), response ->
+                = new JsonObjectRequest(Request.Method.GET,
+                "https://crew-project.herokuapp.com/advertisers/me", new JSONObject(), response ->
         {
             try {
                 if (response.getBoolean("success")) {
                     Picasso
                             .get()
-                            .load("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ7ZfIRF-pXMcvpwTEwlMpVGDJ5JYWeGQdK0Ma8y-J6J21M4Xeu"
-                                    /*"https://o6ugproject.s3.amazonaws.com/"
+                            .load("https://o6ugproject.s3.amazonaws.com/"
                                     + response.getJSONObject("advertiser")
-                                    .getString("avatar")*/)
+                                    .getString("avatar"))
                             .noFade()
                             .into(img_avatar);
 
                     tv_name.setText(response.getJSONObject("advertiser").getString("name"));
                     tv_email.setText(response.getJSONObject("advertiser").getString("email"));
                     tv_bio.setText(response.getJSONObject("advertiser").getString("bio"));
-                    password = response.getJSONObject("advertiser").getString("password");
+                    //password = response.getJSONObject("advertiser").getString("password");
                     avatarURL = response.getJSONObject("advertiser").getString("avatar");
                     tv_balance_count.setText(" " + response.getJSONObject("advertiser").getString("balance") + "LE");
 
@@ -170,7 +167,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> auth = new HashMap<String, String>();
+                HashMap<String, String> auth = new HashMap<>();
                 auth.put("Authorization", manager.getToken());
                 return auth;
             }
