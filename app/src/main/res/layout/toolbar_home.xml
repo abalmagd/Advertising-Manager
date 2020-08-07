@@ -11,8 +11,9 @@
         android:orientation="horizontal"
         android:padding="15dp">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/img_logout"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="logout"
@@ -29,8 +30,9 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/img_settings"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="settings"

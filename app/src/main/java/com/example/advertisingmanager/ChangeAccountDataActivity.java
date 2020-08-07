@@ -16,9 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -36,6 +33,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class ChangeAccountDataActivity extends AppCompatActivity {
 
     Bundle extras;
@@ -44,7 +43,6 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
     private EditText et_email;
     private EditText et_bio;
     public final int IMG_REQUEST = 1;
-    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,25 +127,25 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
 
     private void makeChangeDataRequest() {
         final SessionManager manager = SessionManager.getInstance(this);
-        String url = "https://crew-project.herokuapp.com/advertisers/me";
+        String url = "https://stark-ridge-68501.herokuapp.com/advertisers/me";
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.PATCH,
                 url,
                 response -> {
-            String resultResponse = new String(response.data);
-            try {
-                JSONObject result = new JSONObject(resultResponse);
-                boolean status = result.getBoolean("success");
-                String message = result.getString("message");
+                    String resultResponse = new String(response.data);
+                    try {
+                        JSONObject result = new JSONObject(resultResponse);
+                        boolean status = result.getBoolean("success");
+                        String message = result.getString("message");
 
-                if (status) {
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                    Log.i("Messsage", message);
-                } else {
-                    Log.i("Unexpected", message);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+                        if (status) {
+                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                            Log.i("Messsage", message);
+                        } else {
+                            Log.i("Unexpected", message);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
         }, error -> {
             NetworkResponse networkResponse = error.networkResponse;
             String errorMessage = "Unknown error";
@@ -193,7 +191,7 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> auth = new HashMap<>();
                 auth.put("Authorization", manager.getToken());
                 return auth;
@@ -210,15 +208,14 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
         postParam.put("bio", et_bio.getText().toString());
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.PATCH,
-                "https://crew-project.herokuapp.com/advertisers/me",
+                "https://stark-ridge-68501.herokuapp.com/advertisers/me",
                 new JSONObject(postParam), response -> {
             try {
                 if (response.getBoolean("success")) {
                     Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
                     finish();
                     startActivity(new Intent(this, HomeActivity.class));
-                }
-                else {
+                } else {
                     Log.e("error", response.getString("error"));
                     Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                 }
@@ -242,48 +239,6 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
         // Adding request to request queue
         queue.add(jsonObjReq);
     }
-
-    /*private void makeChangeDataRequest() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        final SessionManager manager = SessionManager.getInstance(this);
-        Map<String, String> postParam = new HashMap<>();
-        postParam.put("name", et_name.getText().toString());
-        postParam.put("email", et_email.getText().toString());
-        postParam.put("bio", et_bio.getText().toString());
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.PATCH,
-                "https://crew-project.herokuapp.com/advertisers/me",
-                new JSONObject(postParam), response -> {
-            try {
-                if (response.getBoolean("success")) {
-                    Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
-                    finish();
-                    startActivity(new Intent(this, HomeActivity.class));
-                }
-                else {
-                    Log.e("error", response.getString("error"));
-                    Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                }
-            } catch (JSONException e) {
-                Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }, error -> {
-            VolleyLog.d("Error: ", error.getMessage());
-            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-        }) {
-            // Passing request headers
-
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> auth = new HashMap<>();
-                auth.put("Authorization", manager.getToken());
-                return auth;
-            }
-        };
-
-        // Adding request to request queue
-        queue.add(jsonObjReq);
-    }*/
 
     public void selectImage(View view) {
         Intent intent = new Intent();
@@ -300,7 +255,7 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
         if (requestCode == IMG_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 img_avatar.setImageBitmap(bitmap);
             } catch (IOException e) {
                 // TODO Auto-generated catch block

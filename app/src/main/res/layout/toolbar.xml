@@ -11,8 +11,9 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <ImageView
+        <ImageButton
             android:layout_width="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="back"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_short_arrow" />
@@ -28,9 +29,10 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/img_confirm"
             android:onClick="confirm"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_check" />

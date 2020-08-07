@@ -1,7 +1,5 @@
 package com.example.advertisingmanager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -21,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText et_username;
@@ -42,6 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
+        et_username.setEnabled(false);
+        et_password.setEnabled(false);
+        et_bio.setEnabled(false);
+        et_name.setEnabled(false);
         validation(et_username.getText().toString(),
                 et_password.getText().toString(),
                 et_bio.getText().toString(),
@@ -85,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
         postParam.put("password", et_password.getText().toString());
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                "https://crew-project.herokuapp.com/advertisers/register",
+                "https://stark-ridge-68501.herokuapp.com/advertisers/register",
                 new JSONObject(postParam), response -> {
             pb_loading.setVisibility(View.INVISIBLE);
             try {
@@ -93,17 +97,28 @@ public class RegisterActivity extends AppCompatActivity {
                     manager.logIn(response.getString("token"));
                     finish();
                     startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    et_username.setEnabled(true);
+                    et_password.setEnabled(true);
+                    et_bio.setEnabled(true);
+                    et_name.setEnabled(true);
                 }
             } catch (JSONException e) {
                 Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                et_username.setEnabled(true);
+                et_password.setEnabled(true);
+                et_bio.setEnabled(true);
+                et_name.setEnabled(true);
             }
         }, error -> {
             pb_loading.setVisibility(View.VISIBLE);
             VolleyLog.d("Error: ", error.getMessage());
             Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            et_username.setEnabled(true);
+            et_password.setEnabled(true);
+            et_bio.setEnabled(true);
+            et_name.setEnabled(true);
         }) {
             // Passing request headers
 

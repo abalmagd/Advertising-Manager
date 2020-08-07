@@ -2,13 +2,10 @@ package com.example.advertisingmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,8 +19,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class LoginActivity extends AppCompatActivity {
-    private String t;
+    String t;
     private EditText et_username;
     private EditText et_password;
     private ProgressBar pb_loading;
@@ -53,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if (username.matches(emailRegex)) {
             if (password.length() != 0) {
+                et_username.setEnabled(false);
+                et_password.setEnabled(false);
                 makeLoginReq();
             }
             else
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         postParam.put("password", et_password.getText().toString());
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                "https://crew-project.herokuapp.com/advertisers/login",
+                "https://stark-ridge-68501.herokuapp.com/advertisers/login",
                 new JSONObject(postParam),
                 response ->
                 {
@@ -92,15 +93,21 @@ public class LoginActivity extends AppCompatActivity {
                         else {
                             Toast.makeText(getApplicationContext(), response.getString("message"),
                                     Toast.LENGTH_LONG).show();
+                            et_username.setEnabled(true);
+                            et_password.setEnabled(true);
                         }
                     } catch (JSONException e) {
                         Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        et_username.setEnabled(true);
+                        et_password.setEnabled(true);
                     }
                 }, error ->
         {
             pb_loading.setVisibility(View.INVISIBLE);
             VolleyLog.d("Error: ", error.getMessage());
             Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            et_username.setEnabled(true);
+            et_password.setEnabled(true);
         }) {
             // Passing request headers
 

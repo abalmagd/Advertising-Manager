@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
@@ -21,9 +19,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class AddCampaignActivity extends AppCompatActivity {
 
-    Bundle extras;
     //private float maxBudget;
     private EditText et_name,
             et_link,
@@ -75,15 +74,14 @@ public class AddCampaignActivity extends AppCompatActivity {
         postParam.put("click_price", et_click_price.getText().toString());
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                "https://crew-project.herokuapp.com/campaigns/",
+                "https://stark-ridge-68501.herokuapp.com/campaigns/",
                 new JSONObject(postParam), response -> {
             try {
                 if (response.getBoolean("success")) {
                     Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
                     finish();
                     startActivity(new Intent(this, HomeActivity.class));
-                }
-                else {
+                } else {
                     Log.e("error", response.getString("error"));
                     Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                 }

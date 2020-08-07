@@ -1,30 +1,25 @@
 package com.example.advertisingmanager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -50,7 +45,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     public void confirm(View view) {
         if(et_newPassword.getText().toString().length() >= 5)
-            makeChangeDataRequest("https://crew-project.herokuapp.com/advertisers/me");
+            makeChangeDataRequest("https://stark-ridge-68501.herokuapp.com/advertisers/me");
         else
             Toast.makeText(this, "Invalid Data", Toast.LENGTH_SHORT).show();
     }

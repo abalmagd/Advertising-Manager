@@ -9,10 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
@@ -27,6 +23,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
         final SessionManager manager = SessionManager.getInstance(this);
 
         JsonObjectRequest campaignDataReq = new JsonObjectRequest(Request.Method.GET,
-                "https://crew-project.herokuapp.com/campaigns",
+                "https://stark-ridge-68501.herokuapp.com/campaigns",
                 new JSONObject(),
                 response -> {
                     try {
@@ -138,7 +138,7 @@ public class HomeActivity extends AppCompatActivity {
 
         JsonObjectRequest profileDataReq
                 = new JsonObjectRequest(Request.Method.GET,
-                "https://crew-project.herokuapp.com/advertisers/me", new JSONObject(), response ->
+                "https://stark-ridge-68501.herokuapp.com/advertisers/me", new JSONObject(), response ->
         {
             try {
                 if (response.getBoolean("success")) {

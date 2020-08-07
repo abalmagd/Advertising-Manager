@@ -5,14 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import androidx.core.content.ContextCompat;
-
 import java.io.ByteArrayOutputStream;
 
-/**
- * Sketch Project Studio
- * Created by Angga on 12/04/2016 14.27.
- */
+import androidx.core.content.ContextCompat;
+
 public class AppHelper {
 
     /**
@@ -24,6 +20,7 @@ public class AppHelper {
      */
     public static byte[] getFileDataFromDrawable(Context context, int id) {
         Drawable drawable = ContextCompat.getDrawable(context, id);
+        assert drawable != null;
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
