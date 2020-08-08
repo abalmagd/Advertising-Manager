@@ -1,5 +1,6 @@
 package com.example.advertisingmanager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class AddCampaignActivity extends AppCompatActivity {
             et_budget,
             et_banner_size,
             et_click_price;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +45,17 @@ public class AddCampaignActivity extends AppCompatActivity {
         /*extras = getIntent().getExtras();
         Log.e("budget", extras.getFloat("budget") + "");
         maxBudget = extras.getFloat("budget");*/
+
+        dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
+        dialog.setMessage("Adding campaign...");
     }
 
     public void confirm(View view) {
         if (!(isEmpty(et_name) && isEmpty(et_link) && isEmpty(et_budget)
                 && isEmpty(et_banner_size) && isEmpty(et_click_price))) {
             makeChangeDataRequest();
+            dialog.show();
         }
 
         else
@@ -76,6 +83,7 @@ public class AddCampaignActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 "https://stark-ridge-68501.herokuapp.com/campaigns/",
                 new JSONObject(postParam), response -> {
+            dialog.dismiss();
             try {
                 if (response.getBoolean("success")) {
                     Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
@@ -89,6 +97,7 @@ public class AddCampaignActivity extends AppCompatActivity {
                 Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }, error -> {
+            dialog.dismiss();
             VolleyLog.d("Error: ", error.getMessage());
             Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
         }) {

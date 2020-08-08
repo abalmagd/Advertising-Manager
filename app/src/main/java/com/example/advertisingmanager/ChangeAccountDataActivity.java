@@ -1,6 +1,7 @@
 package com.example.advertisingmanager;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -43,6 +44,7 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
     private EditText et_email;
     private EditText et_bio;
     public final int IMG_REQUEST = 1;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,10 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
             Picasso.get().load("https://o6ugproject.s3.amazonaws.com/"
                     + extras.getString("avatar")).into(img_avatar);
         }
+
+        dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
+        dialog.setMessage("Updating profile...");
 
         // Validate the input fields
         dataValidation();
@@ -126,11 +132,13 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
     }
 
     private void makeChangeDataRequest() {
+        dialog.show();
         final SessionManager manager = SessionManager.getInstance(this);
         String url = "https://stark-ridge-68501.herokuapp.com/advertisers/me";
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.PATCH,
                 url,
                 response -> {
+                    dialog.dismiss();
                     String resultResponse = new String(response.data);
                     try {
                         JSONObject result = new JSONObject(resultResponse);
@@ -147,6 +155,7 @@ public class ChangeAccountDataActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
         }, error -> {
+            dialog.dismiss();
             NetworkResponse networkResponse = error.networkResponse;
             String errorMessage = "Unknown error";
             if (networkResponse == null) {
